@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%-include("../Tmapheader")%>
+  </head>
+  <body onload="initTmap()">
+    <%-include("../navbar")%>
+
+    <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xxabd2c64eec2549daabdf41bb048a9c14"></script>
+    <script type="text/javascript">
+      function initTmap() {
+        var map = new Tmapv2.Map("map_div", {
+          center: new Tmapv2.LatLng(37.566481622437934, 126.98502302169841), // 지도 초기 좌표
+          width: "100%",
+          height: "800px",
+          zoom: 15,
+        });
+      }
+    </script>
+    <div id="map_div"></div>
+    <%-include("../footer")%>
+  </body>
+</html>
