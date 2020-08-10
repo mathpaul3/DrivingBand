@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Document</title>
+</head>
+
+<body>
+  <audio id="kickDrum">
+    <source src="./kick.mp3" type="audio/mpeg" />
+  </audio>
+  <audio id="crashDrum">
+    <source src="./crash.mp3" type="audio/mpeg" />
+  </audio>
+  <audio id="clapDrum">
+    <source src="./clap.mp3" type="audio/mpeg" />
+  </audio>
+  <audio id="snareDrum">
+    <source src="./snare.mp3" type="audio/mpeg" />
+  </audio>
+  <button onclick="play(1)">playKick</button>
+  <button onclick="play(2)">playCrash</button>
+  <button onclick="play(3)">playClap</button>
+  <button onclick="play(4)">playSnare</button>
+  <button onclick="play(5)">playall</button>
+  <button onclick="test()">playAll</button>
+  <div class="step-sequncer"></div>
+
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  <script>
+    const kickDrum = document.getElementById("kickDrum");
+    const crashDrum = document.getElementById("crashDrum");
+    const snareDrum = document.getElementById("snareDrum");
+    const clapDrum = document.getElementById("clapDrum");
+
+    const kickCheck = [0, 1, 0, 1, 0, 1, 0, 1];
+    const crashCheck = [1, 0, 1, 0, 1, 0, 1, 0];
+    const snareCheck = [1, 1, 0, 0, 1, 1, 0, 0];
+    const clapCheck = [0, 0, 1, 0, 1, 0, 1, 0];
+
+    function delay(gap) {
+      /* gap is in millisecs */
+      let then, now;
+      then = new Date().getTime();
+      now = then;
+      while (now - then < gap) {
+        now = new Date().getTime(); // 현재시간을 읽어 함수를 불러들인 시간과의 차를 이용하여 처리
+      }
+    }
+
+    async function test() {
+      for (let i in kickCheck) {
+        setTimeout(() => {
+          if (kickCheck[i] === 1) kickDrum.play();
+          if (crashCheck[i] === 1) crashDrum.play();
+          if (snareCheck[i] === 1) snareDrum.play();
+          if (clapCheck[i] === 1) clapDrum.play();
+        }, i * 500);
+      }
+      // for (i = 0; i < kickCheck.length; ) {
+      //   try {
+      //     await setTimeout(count, 3000, i);
+      //     console.log(i++);
+      //   } catch (e) {
+      //     console.log(e);
+      //   }
+      // }
+    }
+
+    function count(i) {
+      if (kickCheck[i] === 1) kickDrum.play();
+      if (crashCheck[i] === 1) crashDrum.play();
+      if (snareCheck[i] === 1) snareDrum.play();
+      if (clapCheck[i] === 1) clapDrum.play();
+    }
+
+    function play(data) {
+      switch (data) {
+        case 1:
+          kickDrum.play();
+          break;
+        case 2:
+          crashDrum.play();
+          break;
+        case 3:
+          clapDrum.play();
+          break;
+        case 4:
+          snareDrum.play();
+          break;
+        case 5:
+          kickDrum.play();
+          crashDrum.play();
+          clapDrum.play();
+          snareDrum.play();
+          break;
+      }
+    }
+  </script>
+</body>
+
+</html>
