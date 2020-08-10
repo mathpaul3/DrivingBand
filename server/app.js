@@ -12,16 +12,21 @@ app.set("view engine", "ejs");
 
 app.use(logger("dev"));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({
+  extended: false
+}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => {
-  res.render("index", { num: 1 });
+  res.render("index", {
+    num: 1
+  });
 });
 
 // 라우팅 모듈 설정
-app.use("/", require("./index"));
+app.use("/", require("./api/main"));
+app.use("/api/find", require(".api/find"));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
