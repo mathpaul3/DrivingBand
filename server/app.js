@@ -26,7 +26,7 @@ app.get("/", (req, res) => {
 
 // 라우팅 모듈 설정
 app.use("/", require("./api/main"));
-app.use("/api/find", require(".api/find"));
+//app.use("/api/main", require(".api/find"));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
