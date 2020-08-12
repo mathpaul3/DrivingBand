@@ -27,28 +27,8 @@
 				zoomControl: true,
 				scrollwheel: true
 			});
-			/*marker_s = new Tmapv2.Marker(
-						{
-							position : new Tmapv2.LatLng(37.566567545861645,
-									126.9850380932383),
-							icon : "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
-							iconSize : new Tmapv2.Size(24, 38),
-							map : map
-						});
-		
-				//도착
-				marker_e = new Tmapv2.Marker(
-						{
-							position : new Tmapv2.LatLng(37.403049076341794,
-									127.10331814639885),
-							icon : "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_m_e.png",
-							iconSize : new Tmapv2.Size(24, 38),
-							map : map
-            });
-		*/
 			// 2. 시작, 도착 심볼찍기
-			// 시작
-			//서울 , 은평, 길현, 397
+			// 도로명 주소 사용 { 시, 동, 로 }, {안산시, 와동, 사세충열로94}
 
 			$("#findLoc").submit(event => {
 				event.preventDefault();
@@ -115,8 +95,7 @@
 
 			function checkLocation() {
 				const status = localStorage.getItem('status');
-				console.log(status);
-				if (status == '0') {
+				if (status == '0') { //status == 0 인 경우는 departure
 					localStorage.setItem('status', 1);
 					localStorage.setItem('departure', JSON.stringify(placeInfo));
 					$('.ft_select_wrap').append(
@@ -125,7 +104,7 @@
 					$('#dong').val('');
 					$('#roadNum').val('');
 					$('#locLabel').text('destination');
-				} else if (status === '1') {
+				} else if (status === '1') { //status == 1 인 경우는 destination
 					localStorage.setItem('destination', JSON.stringify(placeInfo));
 					$('.ft_select_wrap').append(
 						`<div class="checkDP"><span>목적지: ${placeInfo.builName}</span></div>`);
@@ -145,6 +124,108 @@
 			function onError() {
 				alert("onError");
 			}
+			//카테고리 검색
+			$("#searchBtn").click(function () {
+				const searchKeyword = $('#searchKeyword').val();
+				const routeData = JSON.parse(localStorage.getItem('routeData'));
+				console.log(routeData);
+				for (var i in routeData) { //for문 [S]
+					var geometry = routeData[i].geometry;
+					var properties = routeData[i].properties;
+
+					// 경로들의 결과값들을 포인트 객체로 변환 
+					var latlon = new Tmapv2.Point(
+						geometry.coordinates[0],
+						geometry.coordinates[1]);
+					// 포인트 객체를 받아 좌표값으로 다시 변환
+					var convertPoint = new Tmapv2.Projection.convertEPSG3857ToWGS84GEO(
+						latlon);
+
+					const routeInfoObj = {
+						markerImage: markerImg,
+						lng: convertPoint._lng,
+						lat: convertPoint._lat,
+						pointType: pType
+					};
+
+					$.ajax({
+						method: "GET", // 요청 방식
+						url: "https://apis.openapi.sk.com/tmap/pois/search/around?version=1&format=json&callback=result", // url 주소
+						data: {
+							"categories": searchKeyword,
+							"resCoordType": "EPSG3857",
+							"searchType": "name",
+							"searchtypCd": "A",
+							"radius": 1,
+							"reqCoordType": "WGS84GEO",
+							"centerLon": routeInfoObj.lon,
+							"centerLat": routeInfoObj.lang,
+							"appKey": "l7xxabd2c64eec2549daabdf41bb048a9c14",
+							"count": 10
+						},
+						success: function (response) {
+							console.log(response);
+
+							var resultpoisData = response.searchPoiInfo.pois.poi;
+
+
+							var positionBounds = new Tmapv2
+								.LatLngBounds(); //맵에 결과물 확인 하기 위한 LatLngBounds객체 생성
+
+							// 3. POI 마커 표시
+							for (var k in resultpoisData) {
+								// POI 마커 정보 저장
+								var noorLat = Number(resultpoisData[k].noorLat);
+								var noorLon = Number(resultpoisData[k].noorLon);
+								var name = resultpoisData[k].name;
+
+								// POI 정보의 ID
+								var id = resultpoisData[k].id;
+
+								// 좌표 객체 생성
+								var pointCng = new Tmapv2.Point(noorLon, noorLat);
+
+								// EPSG3857좌표계를 WGS84GEO좌표계로 변환
+								var projectionCng = new Tmapv2.Projection.convertEPSG3857ToWGS84GEO(
+									pointCng);
+
+								var lat = projectionCng._lat;
+								var lon = projectionCng._lng;
+
+								// 좌표 설정
+								var markerPosition = new Tmapv2.LatLng(lat, lon);
+
+								// Marker 설정
+								marker = new Tmapv2.Marker({
+									position: markerPosition,
+									//icon : "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_b_m_a.png",
+									icon: "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_b_m_" +
+										k + ".png",
+									iconSize: new Tmapv2.Size(24, 38),
+									title: name,
+									map: map
+								});
+								// 마커들을 담을 배열에 마커 저장
+								markerArr.push(marker);
+								positionBounds.extend(markerPosition); // LatLngBounds의 객체 확장
+							}
+
+							map.panToBounds(positionBounds); // 확장된 bounds의 중심으로 이동시키기
+							map.zoomOut();
+						},
+						error: function (request, status, error) {
+							console.log("code:" + request.status + "\n" + "message:" + request
+								.responseText +
+								"\n" + "error:" + error);
+						}
+					});
+
+					// Marker 추가
+					addMarkers(routeInfoObj);
+				}
+			});
+
+
 
 			// 3. 경로탐색 API 사용요청
 
@@ -174,8 +255,8 @@
 								success: function (response) {
 
 
-									var resultData = response.features;
-
+									const resultData = response.features;
+									localStorage.setItem('routeData', JSON.stringify(resultData));
 									for (var i in resultData) { //for문 [S]
 										var geometry = resultData[i].geometry;
 										var properties = resultData[i].properties;
@@ -225,12 +306,13 @@
 											var convertPoint = new Tmapv2.Projection.convertEPSG3857ToWGS84GEO(
 												latlon);
 
-											var routeInfoObj = {
+											const routeInfoObj = {
 												markerImage: markerImg,
 												lng: convertPoint._lng,
 												lat: convertPoint._lat,
 												pointType: pType
 											};
+
 
 											// Marker 추가
 											addMarkers(routeInfoObj);
@@ -320,6 +402,10 @@
 	<div class="w3-main" style="margin-left: 300px; margin-top: 43px;">
 		<div class="ft_area">
 			<div class="ft_select_wrap">
+				<form>
+					<input id="searchKeyword"></input>
+					<button id="searchBtn">카테고리</button>
+				</form>
 				<form id="findLoc">
 					<span id="locLabel">departure</span>
 					<input id="city"></input>
@@ -327,7 +413,7 @@
 					<input id="roadNum"></input>
 					<button id="submitBtn">get LatLng</button>
 				</form>
-				<button id="find_btn" style="display:none">적용하기</button>
+				<button id="find_btn" style="display:none">길찾기</button>
 			</div>
 			<div class="map_act_btn_wrap clear_box"></div>
 			<div class="clear"></div>
