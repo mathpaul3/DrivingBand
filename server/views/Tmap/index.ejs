@@ -22,7 +22,7 @@
 			map = new Tmapv2.Map("map_div", {
 				center: new Tmapv2.LatLng(37.49241689559544, 127.03171389453507),
 				width: "100%",
-				height: "400px",
+				height: "700px",
 				zoom: 11,
 				zoomControl: true,
 				scrollwheel: true
@@ -125,6 +125,7 @@
 				alert("onError");
 			}
 			//카테고리 검색
+			let cnt = 0;
 			$("#searchBtn").click(function () {
 				const searchKeyword = $('#searchKeyword').val();
 				const routeData = JSON.parse(localStorage.getItem('routeData'));
@@ -132,23 +133,26 @@
 				for (var i in routeData) { //for문 [S]
 					var geometry = routeData[i].geometry;
 					var properties = routeData[i].properties;
-
 					// 경로들의 결과값들을 포인트 객체로 변환 
 					var latlon = new Tmapv2.Point(
 						geometry.coordinates[0],
 						geometry.coordinates[1]);
 					// 포인트 객체를 받아 좌표값으로 다시 변환
-					var convertPoint = new Tmapv2.Projection.convertEPSG3857ToWGS84GEO(
+					const convertPoint = new Tmapv2.Projection.convertEPSG3857ToWGS84GEO(
 						latlon);
 
+					//여기가 안됨 ----------------------------------
 					const routeInfoObj = {
-						markerImage: markerImg,
+						markerImage: null,
 						lng: convertPoint._lng,
 						lat: convertPoint._lat,
-						pointType: pType
+						pointType: pType,
 					};
+					//------------------------------------------------------------------------------
+					localStorage.setItem('data', 1);
 
 					$.ajax({
+
 						method: "GET", // 요청 방식
 						url: "https://apis.openapi.sk.com/tmap/pois/search/around?version=1&format=json&callback=result", // url 주소
 						data: {
@@ -158,8 +162,8 @@
 							"searchtypCd": "A",
 							"radius": 1,
 							"reqCoordType": "WGS84GEO",
-							"centerLon": routeInfoObj.lon,
-							"centerLat": routeInfoObj.lang,
+							"centerLon": routeInfoObj.lng,
+							"centerLat": routeInfoObj.lat,
 							"appKey": "l7xxabd2c64eec2549daabdf41bb048a9c14",
 							"count": 10
 						},
@@ -217,6 +221,7 @@
 							console.log("code:" + request.status + "\n" + "message:" + request
 								.responseText +
 								"\n" + "error:" + error);
+
 						}
 					});
 
