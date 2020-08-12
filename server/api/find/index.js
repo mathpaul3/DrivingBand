@@ -1,10 +1,7 @@
-const {
-    Router
-} = require("express");
+const { Router } = require("express");
 const router = Router();
-const ctrl = require("./marker.ctrl");
+const ctrl = require("./find.ctrl");
 
 router.post("/", ctrl.findRoad);
-
 
 module.exports = router;
