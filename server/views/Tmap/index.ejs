@@ -52,16 +52,14 @@
 			$("#findRoad").submit(event => {
 				event.preventDefault();
 
-				const departure1 = $('#departure1').val();
-				const departure2 = $('#departure2').val();
-				const departure3 = $('#departure3').val();
-				const departure4 = $('#departure4').val();
+				const city = $('#city').val();
+				const dong = $('#dong').val();
+				const roadNum = $('#roadNum').val();
 
 				const data = {
-					departure1,
-					departure2,
-					departure3,
-					departure4
+					city,
+					dong,
+					roadNum,
 				};
 
 				const destination = $('#destination').val();
@@ -85,7 +83,7 @@
 				};
 
 				// TData 객체의 지오코딩 함수
-				tData.getGeoFromAddressJson(event.departure1, event.departure2, event.departure3, event.departure4, optionObj,
+				tData.getGeoFromAddressJson(event.city, event.dong, event.roadNum, null, optionObj,
 					params);
 
 			}
@@ -93,9 +91,9 @@
 			function onComplete() {
 				console.log(this._responseData); //json으로 데이터를 받은 정보들을 콘솔창에서 확인할 수 있습니다.
 
-				var lon = this._responseData.coordinateInfo.lon; //json으로 데이터를 받은 정보에서 경도정보를 추출합니다.
-				var lat = this._responseData.coordinateInfo.lat; //json으로 데이터를 받은 정보에서 위도정보를 추출합니다.
-
+				const lat = this._responseData.coordinateInfo.newLat; //json으로 데이터를 받은 정보에서 경도정보를 추출합니다.
+				const lon = this._responseData.coordinateInfo.newLon; //json으로 데이터를 받은 정보에서 위도정보를 추출합니다.
+				console.log(lon, lat);
 				var marker = new Tmapv2.Marker({
 					position: new Tmapv2.LatLng(lat, lon)
 				});
@@ -288,10 +286,9 @@
 	<div class="ft_area">
 		<div class="ft_select_wrap">
 			<form id="findRoad">
-				<input id="departure1"></input>
-				<input id="departure2"></input>
-				<input id="departure3"></input>
-				<input id="departure4"></input>
+				<input id="city"></input>
+				<input id="dong"></input>
+				<input id="roadNum"></input>
 				<input id="destination"></input>
 				<button id="submitBtn">get LatLng</button>
 			</form>
