@@ -95,6 +95,7 @@
 
 			function checkLocation() {
 				const status = localStorage.getItem('status');
+				console.log(placeInfo);
 				if (status == '0') { //status == 0 인 경우는 departure
 					localStorage.setItem('status', 1);
 					localStorage.setItem('departure', JSON.stringify(placeInfo));
@@ -131,25 +132,24 @@
 				const routeData = JSON.parse(localStorage.getItem('routeData'));
 				console.log(routeData);
 				for (var i in routeData) { //for문 [S]
-					var geometry = routeData[i].geometry;
-					var properties = routeData[i].properties;
+
+
+					const geometry = routeData[i].geometry;
+					const properties = routeData[i].properties;
 					// 경로들의 결과값들을 포인트 객체로 변환 
-					var latlon = new Tmapv2.Point(
+					const latlon = new Tmapv2.Point(
 						geometry.coordinates[0],
 						geometry.coordinates[1]);
 					// 포인트 객체를 받아 좌표값으로 다시 변환
 					const convertPoint = new Tmapv2.Projection.convertEPSG3857ToWGS84GEO(
 						latlon);
 
-					//여기가 안됨 ----------------------------------
+
 					const routeInfoObj = {
-						markerImage: null,
 						lng: convertPoint._lng,
 						lat: convertPoint._lat,
-						pointType: pType,
+						//pointType: pType,
 					};
-					//------------------------------------------------------------------------------
-					localStorage.setItem('data', 1);
 
 					$.ajax({
 
@@ -178,6 +178,8 @@
 
 							// 3. POI 마커 표시
 							for (var k in resultpoisData) {
+								cnt++;
+								localStorage.setItem('cnt', cnt);
 								// POI 마커 정보 저장
 								var noorLat = Number(resultpoisData[k].noorLat);
 								var noorLon = Number(resultpoisData[k].noorLon);
@@ -224,6 +226,7 @@
 
 						}
 					});
+					//return false;
 
 					// Marker 추가
 					addMarkers(routeInfoObj);
@@ -407,10 +410,10 @@
 	<div class="w3-main" style="margin-left: 300px; margin-top: 43px;">
 		<div class="ft_area">
 			<div class="ft_select_wrap">
-				<form>
-					<input id="searchKeyword"></input>
-					<button id="searchBtn">카테고리</button>
-				</form>
+
+				<input id="searchKeyword"></input>
+				<button id="searchBtn">카테고리</button>
+
 				<form id="findLoc">
 					<span id="locLabel">departure</span>
 					<input id="city"></input>
