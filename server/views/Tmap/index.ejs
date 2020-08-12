@@ -3,10 +3,6 @@
 
 <head>
 	<%-include("../Tmapheader")%>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>simpleMap</title>
-	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-	<script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xxabd2c64eec2549daabdf41bb048a9c14"></script>
 	<script type="text/javascript">
 		var map;
 		var markerInfo;
@@ -287,6 +283,8 @@
 </head>
 
 <body onload="initTmap();">
+	<%-include("../navbar")%>
+	<div class="w3-main" style="margin-left: 300px; margin-top: 43px;">
 	<div class="ft_area">
 		<div class="ft_select_wrap">
 			<form id="findRoad">
@@ -309,6 +307,7 @@
 	<div class="map_act_btn_wrap clear_box"></div>
 	<p id="result"></p>
 	<br />
+	</div>
 </body>
 
 </html>
