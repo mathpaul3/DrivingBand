@@ -131,6 +131,9 @@
 				const searchKeyword = $('#searchKeyword').val();
 				const routeData = JSON.parse(localStorage.getItem('routeData'));
 				console.log(routeData);
+				//
+				//resultMarkerArr = [];
+				//drawInfoArr = null;
 				for (var i in routeData) { //for문 [S]
 
 
@@ -146,9 +149,10 @@
 
 
 					const routeInfoObj = {
+						//markerImage: "http://topopen.tmap.co.kr/imgs/point.png",
 						lng: convertPoint._lng,
 						lat: convertPoint._lat,
-						//pointType: pType,
+						//pointType: null,
 					};
 
 					$.ajax({
@@ -160,12 +164,12 @@
 							"resCoordType": "EPSG3857",
 							"searchType": "name",
 							"searchtypCd": "A",
-							"radius": 1,
+							"radius": 2,
 							"reqCoordType": "WGS84GEO",
 							"centerLon": routeInfoObj.lng,
 							"centerLat": routeInfoObj.lat,
 							"appKey": "l7xxabd2c64eec2549daabdf41bb048a9c14",
-							"count": 10
+							"count": 200,
 						},
 						success: function (response) {
 							console.log(response);
@@ -206,13 +210,15 @@
 									position: markerPosition,
 									//icon : "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_b_m_a.png",
 									icon: "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_b_m_" +
-										k + ".png",
+										(k % 10) + ".png",
 									iconSize: new Tmapv2.Size(24, 38),
 									title: name,
 									map: map
 								});
 								// 마커들을 담을 배열에 마커 저장
-								markerArr.push(marker);
+								if (geometry.type == "LineString") {
+									markerArr.push(marker);
+								}
 								positionBounds.extend(markerPosition); // LatLngBounds의 객체 확장
 							}
 
