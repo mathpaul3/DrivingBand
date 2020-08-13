@@ -1,4 +1,4 @@
-<!-- 분할에 async await -->
+<!-- 분할 -->
 <!DOCTYPE html>
 <html>
 
@@ -52,14 +52,14 @@
 
 			// 3. 경로탐색 API 사용요청
 			$("#find_btn").click(
-				async function () {
+				function () {
 
 					//기존 맵에 있던 정보들 초기화
 					//resettingMap();
 					const departure = JSON.parse(localStorage.getItem('departure'));
 					const destination = JSON.parse(localStorage.getItem('destination'));
 					//JSON TYPE EDIT [S]
-					response = await $.ajax({
+					$.ajax({
 						type: "POST",
 						url: "https://apis.openapi.sk.com/tmap/routes?version=1&format=json&callback=result",
 						async: false,
