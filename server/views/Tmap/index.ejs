@@ -132,7 +132,7 @@
 				const routeData = JSON.parse(localStorage.getItem('routeData'));
 				console.log(routeData);
 				//
-				//resultMarkerArr = [];
+				resultMarkerArr = null;
 				//drawInfoArr = null;
 
 				for (var i in routeData) { //for문 [S]
@@ -191,7 +191,7 @@
 
 								// POI 정보의 ID
 								var id = resultpoisData[k].id;
-								console.log(noorLon, noorLat);
+								//console.log(noorLon, noorLat);
 								// 좌표 객체 생성
 								var pointCng = new Tmapv2.Point(noorLon, noorLat);
 
