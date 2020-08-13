@@ -23,8 +23,7 @@
       marker = new Tmapv2.Marker({
         position: markerPosition,
         //icon : "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_b_m_a.png",
-        icon:
-          "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_b_m_" +
+        icon: "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_b_m_" +
           (k % 10) +
           ".png",
         iconSize: new Tmapv2.Size(24, 38),
@@ -33,7 +32,9 @@
       });
       // 마커들을 담을 배열에 마커 저장
       if (geometry.type == "LineString") {
+        //localStorage.setItem('markArr', markerArr);
         markerArr.push(marker);
+        //markerArr.pop(marker);
       }
       positionBounds.extend(markerPosition); // LatLngBounds의 객체 확장
     }
