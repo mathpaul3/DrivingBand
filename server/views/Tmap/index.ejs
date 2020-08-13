@@ -43,9 +43,9 @@
 				const roadNum = $("#roadNum").val();
 
 				const data = {
-				city,
-				gun_gu,
-				roadNum,
+					city,
+					gun_gu,
+					roadNum,
 				};
 
 				//const destination = $('#destination').val();
@@ -73,7 +73,7 @@
 							"endY": destination.lat,
 						},
 						success: function (response) {
-							findBtnSuccess(response);	// findBtn.ejs에 함수 선언되어 있음
+							findBtnSuccess(response); // findBtn.ejs에 함수 선언되어 있음
 						},
 						error: function (request, status, error) {
 							console.log("code:" +
@@ -118,7 +118,7 @@
 							"count": 200,
 						},
 						success: function (response, geometry) {
-							searchBtnSuccess(response, geometry);	// searchBtn.ejs에 함수 선언되어 있음
+							searchBtnSuccess(response, geometry); // searchBtn.ejs에 함수 선언되어 있음
 						},
 						error: function (request, status, error) {
 							console.log("code:" + request.status + "\n" + "message:" + request
@@ -130,12 +130,12 @@
 					//return false;
 
 					// Marker 추가
-					addMarkers(routeInfoObj);
+					//addMarkers(routeInfoObj);
 				}
 			});
 		}
 	</script>
-	
+
 	<%-include("findLoc")%>
 	<%-include("findBtn")%>
 	<%-include("searchBtn")%>

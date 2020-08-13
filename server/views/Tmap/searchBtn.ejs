@@ -8,12 +8,13 @@
 
     // 3. POI 마커 표시
     for (var k in resultpoisData) {
+
       cnt++;
       localStorage.setItem("cnt", cnt);
       // POI 마커 정보 저장
       var noorLat = Number(resultpoisData[k].noorLat);
       var noorLon = Number(resultpoisData[k].noorLon);
-      console.log("noorLat : ", noorLat, "\nnoorLon : ", noorLon);
+      //console.log("noorLat : ", noorLat, "\nnoorLon : ", noorLon);
       var name = resultpoisData[k].name;
 
       // 좌표 설정
@@ -27,8 +28,7 @@
       // );
 
       // Marker 설정
-      marker = new Tmapv2.Marker(
-        {
+      marker = new Tmapv2.Marker({
           position: markerPosition,
           //icon : "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_b_m_a.png",
           icon:
@@ -46,10 +46,12 @@
         // iconHtml
       );
       // 마커들을 담을 배열에 마커 저장
-      if (geometry.type == "LineString") {
-        markerArr.push(marker);
-      }
+
+      //markerArr.push(marker);
+
+
       positionBounds.extend(markerPosition); // LatLngBounds의 객체 확장
+      break;
     }
 
     map.panToBounds(positionBounds); // 확장된 bounds의 중심으로 이동시키기
