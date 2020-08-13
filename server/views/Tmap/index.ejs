@@ -37,7 +37,6 @@
 
 			$("#findLoc").submit((event) => {
 				event.preventDefault();
-
 				const city = $("#city").val();
 				const gun_gu = $("#gun_gu").val();
 				const roadNum = $("#roadNum").val();
@@ -55,6 +54,7 @@
 			// 3. 경로탐색 API 사용요청
 			$("#find_btn").click(
 				function () {
+
 
 					//기존 맵에 있던 정보들 초기화
 					//resettingMap();
@@ -90,7 +90,9 @@
 			$("#searchBtn").click(function () {
 				const searchKeyword = $('#searchKeyword').val();
 				const routeData = JSON.parse(localStorage.getItem('routeData'));
+				const circleColor = Math.round(Math.random() * 0xffffff).toString(16);
 				console.log("routeData : ", routeData);
+
 
 				for (var i in routeData) { //for문 [S]
 
@@ -102,6 +104,7 @@
 						lat: geometry.coordinates[1],
 						//pointType: null,
 					};
+
 
 					$.ajax({
 
@@ -118,7 +121,8 @@
 							"count": 200,
 						},
 						success: function (response, geometry) {
-							searchBtnSuccess(response, geometry); // searchBtn.ejs에 함수 선언되어 있음
+							searchBtnSuccess(response, geometry,
+								circleColor); // searchBtn.ejs에 함수 선언되어 있음
 						},
 						error: function (request, status, error) {
 							console.log("code:" + request.status + "\n" + "message:" + request
