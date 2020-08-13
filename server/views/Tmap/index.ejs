@@ -34,12 +34,12 @@
 				event.preventDefault();
 
 				const city = $('#city').val();
-				const dong = $('#dong').val();
+				const gun_gu = $('#gun_gu').val();
 				const roadNum = $('#roadNum').val();
 
 				const data = {
 					city,
-					dong,
+					gun_gu,
 					roadNum,
 				};
 
@@ -55,7 +55,6 @@
 				var tData = new Tmapv2.extension.TData();
 
 				var optionObj = {
-					coordType: "WGS84GEO",
 					addressFlag: "F02" //응답좌표 타입 옵션 설정 입니다.
 				};
 
@@ -66,7 +65,7 @@
 				};
 
 				// TData 객체의 지오코딩 함수
-				tData.getGeoFromAddressJson(event.city, event.dong, event.roadNum, null, optionObj,
+				tData.getGeoFromAddressJson(event.city, event.gun_gu, event.roadNum, null, optionObj,
 					params);
 
 			}
@@ -102,7 +101,7 @@
 					$('.ft_select_wrap').append(
 						`<div class="checkDP"><span>출발지: ${placeInfo.builName}</span></div>`);
 					$('#city').val('');
-					$('#dong').val('');
+					$('#gun_gu').val('');
 					$('#roadNum').val('');
 					$('#locLabel').text('destination');
 				} else if (status === '1') { //status == 1 인 경우는 destination
@@ -125,17 +124,17 @@
 			function onError() {
 				alert("onError");
 			}
+
 			//카테고리 검색
 			let cnt = 0;
 			$("#searchBtn").click(function () {
 				const searchKeyword = $('#searchKeyword').val();
 				const routeData = JSON.parse(localStorage.getItem('routeData'));
-				console.log(routeData);
+				console.log("routeData : ", routeData);
 				for (var i in routeData) { //for문 [S]
 
 
 					const geometry = routeData[i].geometry;
-					const properties = routeData[i].properties;
 					// 경로들의 결과값들을 포인트 객체로 변환 
 					const latlon = new Tmapv2.Point(
 						geometry.coordinates[0],
@@ -157,7 +156,7 @@
 						url: "https://apis.openapi.sk.com/tmap/pois/search/around?version=1&format=json&callback=result", // url 주소
 						data: {
 							"categories": searchKeyword,
-							"resCoordType": "EPSG3857",
+							"resCoordType": "WGS84GEO",
 							"searchType": "name",
 							"searchtypCd": "A",
 							"radius": 1,
@@ -187,7 +186,7 @@
 
 								// POI 정보의 ID
 								var id = resultpoisData[k].id;
-
+								console.log(noorLon, noorLat);
 								// 좌표 객체 생성
 								var pointCng = new Tmapv2.Point(noorLon, noorLat);
 
@@ -416,9 +415,9 @@
 
 				<form id="findLoc">
 					<span id="locLabel">departure</span>
-					<input id="city"></input>
-					<input id="dong"></input>
-					<input id="roadNum"></input>
+					<input id="city" placeholder="시/도" required></input>
+					<input id="gun_gu" placeholder="시/군/구" required></input>
+					<input id="roadNum" placeholder="도로명 + 번지" required></input>
 					<button id="submitBtn">get LatLng</button>
 				</form>
 				<button id="find_btn" style="display:none">길찾기</button>
