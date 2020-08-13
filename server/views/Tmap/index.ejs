@@ -3,238 +3,241 @@
 <html>
 
 <head>
-   <%-include("../Tmapheader")%>
-   <script type="text/javascript"></script>
-   <script type="text/javascript">
-      let placeInfo = {};
-      var map;
-      var markerInfo;
-      //출발지,도착지 마커
-      var marker_s, marker_e, marker_p;
-      //경로그림정보
-      var drawInfoArr = [];
-      var drawInfoArr2 = [];
+	<%-include("../Tmapheader")%>
+	<script type="text/javascript"></script>
+	<script type="text/javascript">
+		let placeInfo = {};
+		var map;
+		var markerInfo;
+		//출발지,도착지 마커
+		var marker_s, marker_e, marker_p;
+		//경로그림정보
+		var drawInfoArr = [];
+		var drawInfoArr2 = [];
 
-      var chktraffic = [];
-      var resultdrawArr = [];
-      var resultMarkerArr = [];
+		var chktraffic = [];
+		var resultdrawArr = [];
+		var resultMarkerArr = [];
 
-      function initTmap() {
-         // 1. 지도 띄우기
-         map = new Tmapv2.Map("map_div", {
-            center: new Tmapv2.LatLng(37.49241689559544, 127.03171389453507),
-            width: "100%",
-            height: "700px",
-            zoom: 11,
-            zoomControl: true,
-            scrollwheel: true
-         });
+		var CafeNote = [];
 
-         // 2. 시작, 도착 심볼찍기
-         // 도로명 주소 사용 { 시, 동, 로 }, {안산시, 와동, 사세충열로94}
+		function initTmap() {
+			// 1. 지도 띄우기
+			map = new Tmapv2.Map("map_div", {
+				center: new Tmapv2.LatLng(37.49241689559544, 127.03171389453507),
+				width: "100%",
+				height: "700px",
+				zoom: 11,
+				zoomControl: true,
+				scrollwheel: true
+			});
 
-         $("#findLoc").submit((event) => {
-            event.preventDefault();
+			// 2. 시작, 도착 심볼찍기
+			// 도로명 주소 사용 { 시, 동, 로 }, {안산시, 와동, 사세충열로94}
 
-            const city = $("#city").val();
-            const gun_gu = $("#gun_gu").val();
-            const roadNum = $("#roadNum").val();
+			$("#findLoc").submit((event) => {
+				event.preventDefault();
 
-            const data = {
-            city,
-            gun_gu,
-            roadNum,
-            };
+				const city = $("#city").val();
+				const gun_gu = $("#gun_gu").val();
+				const roadNum = $("#roadNum").val();
 
-            //const destination = $('#destination').val();
-            loadGetAddressFromLonLat(data);
-         });
+				const data = {
+				city,
+				gun_gu,
+				roadNum,
+				};
 
-         // 3. 경로탐색 API 사용요청
-         $("#find_btn").click(
-            function () {
+				//const destination = $('#destination').val();
+				loadGetAddressFromLonLat(data);
+			});
 
-               //기존 맵에 있던 정보들 초기화
-               //resettingMap();
-               const departure = JSON.parse(localStorage.getItem('departure'));
-               const destination = JSON.parse(localStorage.getItem('destination'));
-               //JSON TYPE EDIT [S]
-               $.ajax({
-                  type: "POST",
-                  url: "https://apis.openapi.sk.com/tmap/routes?version=1&format=json&callback=result",
-                  async: false,
-                  data: {
-                     "appKey": "l7xxabd2c64eec2549daabdf41bb048a9c14",
-                     "startX": departure.lon,
-                     "startY": departure.lat,
-                     "endX": destination.lon,
-                     "endY": destination.lat,
-                  },
-                  success: function (response) {
-                     findBtnSuccess(response);   // findBtn.ejs에 함수 선언되어 있음
-                  },
-                  error: function (request, status, error) {
-                     console.log("code:" +
-                        request.status + "\n" +
-                        "message:" +
-                        request.responseText +
-                        "\n" + "error:" + error);
-                  }
-               });
-               //JSON TYPE EDIT [E]
-            }
-         );
+			// 3. 경로탐색 API 사용요청
+			$("#find_btn").click(
+				function () {
 
-         $("#searchBtn").click(function () {
-            const searchKeyword = $('#searchKeyword').val();
-            const routeData = JSON.parse(localStorage.getItem('routeData'));
-            console.log("routeData : ", routeData);
-            for (var i in routeData) { //for문 [S]
+					//기존 맵에 있던 정보들 초기화
+					//resettingMap();
+					const departure = JSON.parse(localStorage.getItem('departure'));
+					const destination = JSON.parse(localStorage.getItem('destination'));
+					//JSON TYPE EDIT [S]
+					$.ajax({
+						type: "POST",
+						url: "https://apis.openapi.sk.com/tmap/routes?version=1&format=json&callback=result",
+						async: false,
+						data: {
+							"appKey": "l7xxabd2c64eec2549daabdf41bb048a9c14",
+							"startX": departure.lon,
+							"startY": departure.lat,
+							"endX": destination.lon,
+							"endY": destination.lat,
+						},
+						success: function (response) {
+							findBtnSuccess(response);	// findBtn.ejs에 함수 선언되어 있음
+						},
+						error: function (request, status, error) {
+							console.log("code:" +
+								request.status + "\n" +
+								"message:" +
+								request.responseText +
+								"\n" + "error:" + error);
+						}
+					});
+					//JSON TYPE EDIT [E]
+				}
+			);
+
+			$("#searchBtn").click(function () {
+				const searchKeyword = $('#searchKeyword').val();
+				const routeData = JSON.parse(localStorage.getItem('routeData'));
+				console.log("routeData : ", routeData);
+
+				for (var i in routeData) { //for문 [S]
 
 
-               const geometry = routeData[i].geometry;
-               const routeInfoObj = {
-                  //markerImage: "http://topopen.tmap.co.kr/imgs/point.png",
-                  lng: geometry.coordinates[0],
-                  lat: geometry.coordinates[1],
-                  //pointType: null,
-               };
+					const geometry = routeData[i].geometry;
+					const routeInfoObj = {
+						//markerImage: "http://topopen.tmap.co.kr/imgs/point.png",
+						lng: geometry.coordinates[0],
+						lat: geometry.coordinates[1],
+						//pointType: null,
+					};
 
-               $.ajax({
+					$.ajax({
 
-                  method: "GET", // 요청 방식
-                  url: "https://apis.openapi.sk.com/tmap/pois/search/around?version=1&format=json&callback=result", // url 주소
-                  data: {
-                     "categories": searchKeyword,
-                     "searchType": "name",
-                     "searchtypCd": "A",
-                     "radius": 1,
-                     "centerLon": routeInfoObj.lng,
-                     "centerLat": routeInfoObj.lat,
-                     "appKey": "l7xxabd2c64eec2549daabdf41bb048a9c14",
-                     "count": 200,
-                  },
-                  success: function (response) {
-                     searchBtnSuccess(response);   // searchBtn.ejs에 함수 선언되어 있음
-                  },
-                  error: function (request, status, error) {
-                     console.log("code:" + request.status + "\n" + "message:" + request
-                        .responseText +
-                        "\n" + "error:" + error);
+						method: "GET", // 요청 방식
+						url: "https://apis.openapi.sk.com/tmap/pois/search/around?version=1&format=json&callback=result", // url 주소
+						data: {
+							"categories": searchKeyword,
+							"searchType": "name",
+							"searchtypCd": "A",
+							"radius": 1,
+							"centerLon": routeInfoObj.lng,
+							"centerLat": routeInfoObj.lat,
+							"appKey": "l7xxabd2c64eec2549daabdf41bb048a9c14",
+							"count": 200,
+						},
+						success: function (response, geometry) {
+							searchBtnSuccess(response, geometry);	// searchBtn.ejs에 함수 선언되어 있음
+						},
+						error: function (request, status, error) {
+							console.log("code:" + request.status + "\n" + "message:" + request
+								.responseText +
+								"\n" + "error:" + error);
 
-                  }
-               });
-               //return false;
+						}
+					});
+					//return false;
 
-               // Marker 추가
-               addMarkers(routeInfoObj);
-            }
-         });
-      }
-   </script>
-   
-   <%-include("findLoc")%>
-   <%-include("findBtn")%>
-   <%-include("searchBtn")%>
+					// Marker 추가
+					addMarkers(routeInfoObj);
+				}
+			});
+		}
+	</script>
+	
+	<%-include("findLoc")%>
+	<%-include("findBtn")%>
+	<%-include("searchBtn")%>
 
-   <script type="text/javascript">
-      //카테고리 검색
-      let cnt = 0;
+	<script type="text/javascript">
+		//카테고리 검색
+		let cnt = 0;
 
-      function addComma(num) {
-         var regexp = /\B(?=(\d{3})+(?!\d))/g;
-         return num.toString().replace(regexp, ',');
-      }
+		function addComma(num) {
+			var regexp = /\B(?=(\d{3})+(?!\d))/g;
+			return num.toString().replace(regexp, ',');
+		}
 
-      //마커 생성하기
-      function addMarkers(infoObj) {
-         var size = new Tmapv2.Size(24, 38); //아이콘 크기 설정합니다.
+		//마커 생성하기
+		function addMarkers(infoObj) {
+			var size = new Tmapv2.Size(24, 38); //아이콘 크기 설정합니다.
 
-         if (infoObj.pointType == "P") { //포인트점일때는 아이콘 크기를 줄입니다.
-            size = new Tmapv2.Size(8, 8);
-         }
+			if (infoObj.pointType == "P") { //포인트점일때는 아이콘 크기를 줄입니다.
+				size = new Tmapv2.Size(8, 8);
+			}
 
-         marker_p = new Tmapv2.Marker({
-            position: new Tmapv2.LatLng(infoObj.lat, infoObj.lng),
-            icon: infoObj.markerImage,
-            iconSize: size,
-            map: map
-         });
+			marker_p = new Tmapv2.Marker({
+				position: new Tmapv2.LatLng(infoObj.lat, infoObj.lng),
+				icon: infoObj.markerImage,
+				iconSize: size,
+				map: map
+			});
 
-         resultMarkerArr.push(marker_p);
-      }
+			resultMarkerArr.push(marker_p);
+		}
 
-      //라인그리기
-      function drawLine(arrPoint, traffic) {
-         var polyline_;
+		//라인그리기
+		function drawLine(arrPoint, traffic) {
+			var polyline_;
 
-         polyline_ = new Tmapv2.Polyline({
-            path: arrPoint,
-            strokeColor: "#DD0000",
-            strokeWeight: 6,
-            map: map
-         });
-         resultdrawArr.push(polyline_);
+			polyline_ = new Tmapv2.Polyline({
+				path: arrPoint,
+				strokeColor: "#DD0000",
+				strokeWeight: 6,
+				map: map
+			});
+			resultdrawArr.push(polyline_);
 
-      }
+		}
 
-      //초기화 기능
-      function resettingMap() {
-         //기존마커는 삭제
-         marker_s.setMap(null);
-         marker_e.setMap(null);
+		//초기화 기능
+		function resettingMap() {
+			//기존마커는 삭제
+			marker_s.setMap(null);
+			marker_e.setMap(null);
 
-         if (resultMarkerArr.length > 0) {
-            for (var i = 0; i < resultMarkerArr.length; i++) {
-               resultMarkerArr[i].setMap(null);
-            }
-         }
+			if (resultMarkerArr.length > 0) {
+				for (var i = 0; i < resultMarkerArr.length; i++) {
+					resultMarkerArr[i].setMap(null);
+				}
+			}
 
-         if (resultdrawArr.length > 0) {
-            for (var i = 0; i < resultdrawArr.length; i++) {
-               resultdrawArr[i].setMap(null);
-            }
-         }
+			if (resultdrawArr.length > 0) {
+				for (var i = 0; i < resultdrawArr.length; i++) {
+					resultdrawArr[i].setMap(null);
+				}
+			}
 
-         chktraffic = [];
-         drawInfoArr = [];
-         resultMarkerArr = [];
-         resultdrawArr = [];
-      }
-      //서울 , 은평, 길현, 397
-   </script>
+			chktraffic = [];
+			drawInfoArr = [];
+			resultMarkerArr = [];
+			resultdrawArr = [];
+		}
+		//서울 , 은평, 길현, 397
+	</script>
 
 </head>
 
 <body onload="initTmap(); localStorage.setItem('status',0)">
-   <%-include("../navbar")%>
-   <div class="w3-main" style="margin-left: 300px; margin-top: 43px;">
-      <div class="ft_area">
-         <div class="ft_select_wrap">
+	<%-include("../navbar")%>
+	<div class="w3-main" style="margin-left: 300px; margin-top: 43px;">
+		<div class="ft_area">
+			<div class="ft_select_wrap">
 
-            <input id="searchKeyword"></input>
-            <button id="searchBtn">카테고리</button>
+				<input id="searchKeyword"></input>
+				<button id="searchBtn">카테고리</button>
 
-            <form id="findLoc">
-               <span id="locLabel">departure</span>
-               <input id="city" placeholder="시/도" required></input>
-               <input id="gun_gu" placeholder="시/군/구" required></input>
-               <input id="roadNum" placeholder="도로명 + 번지" required></input>
-               <button id="submitBtn">get LatLng</button>
-            </form>
-            <button id="find_btn" style="display:none">길찾기</button>
-         </div>
-         <div class="map_act_btn_wrap clear_box"></div>
-         <div class="clear"></div>
-      </div>
+				<form id="findLoc">
+					<span id="locLabel">departure</span>
+					<input id="city" placeholder="시/도" required></input>
+					<input id="gun_gu" placeholder="시/군/구" required></input>
+					<input id="roadNum" placeholder="도로명 + 번지" required></input>
+					<button id="submitBtn">get LatLng</button>
+				</form>
+				<button id="find_btn" style="display:none">길찾기</button>
+			</div>
+			<div class="map_act_btn_wrap clear_box"></div>
+			<div class="clear"></div>
+		</div>
 
-      <div id="map_wrap" class="map_wrap">
-         <div id="map_div"></div>
-      </div>
-      <div class="map_act_btn_wrap clear_box"></div>
-      <p id="result"></p>
-      <br />
-   </div>
+		<div id="map_wrap" class="map_wrap">
+			<div id="map_div"></div>
+		</div>
+		<div class="map_act_btn_wrap clear_box"></div>
+		<p id="result"></p>
+		<br />
+	</div>
 </body>
 
 </html>
