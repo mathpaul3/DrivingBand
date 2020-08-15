@@ -24,36 +24,9 @@
           drawInfoArr.push(latlng);
         }
         drawLine(drawInfoArr, "0");
-      } else {
-        var markerImg = "";
-        var pType = "";
-
-        if (properties.pointType == "S") {
-          //출발지 마커
-          markerImg =
-            "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_m_s.png";
-          pType = "S";
-        } else if (properties.pointType == "E") {
-          //도착지 마커
-          markerImg =
-            "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_m_e.png";
-          //pType = "E";
-        } else {
-          //각 포인트 마커
-          markerImg = "http://topopen.tmap.co.kr/imgs/point.png";
-          //pType = "P";
-        }
-
-        const routeInfoObj = {
-          markerImage: markerImg,
-          lng: geometry.coordinates[0],
-          lat: geometry.coordinates[1],
-          //pointType: pType,
-        };
-
-        // Marker 추가
-        addMarkers(routeInfoObj);
       }
+
+
     } //for문 [E]
   }
 </script>
