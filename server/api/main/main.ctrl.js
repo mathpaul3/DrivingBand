@@ -19,10 +19,18 @@ const showTmapPage = (req, res) => {
   });
 };
 
+const showSequencer = (req, res) => {
+  let num = 4;
+  res.render("main/sequencer", {
+    num
+  });
+  console.log('here');
+};
 
 
 module.exports = {
   showMainPage,
   showCategoryPage,
   showTmapPage,
+  showSequencer,
 };

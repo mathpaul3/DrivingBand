@@ -1,20 +1,18 @@
 <script type="text/javascript">
   function searchBtnSuccess(response, geometry, circleColor) {
     //console.log(response);
-    console.log(circleColor, 1);
 
     var resultpoisData = response.searchPoiInfo.pois.poi;
+    console.log(resultpoisData.length, 'length');
 
     var positionBounds = new Tmapv2.LatLngBounds(); //맵에 결과물 확인 하기 위한 LatLngBounds객체 생성
     // 3. POI 마커 표시
     for (var k in resultpoisData) {
 
-      cnt++;
-      localStorage.setItem("cnt", cnt);
       // POI 마커 정보 저장
       var noorLat = Number(resultpoisData[k].noorLat);
       var noorLon = Number(resultpoisData[k].noorLon);
-      console.log(typeof (k));
+
       //console.log("noorLat : ", noorLat, "\nnoorLon : ", noorLon);
       var name = resultpoisData[k].name;
 
@@ -63,8 +61,8 @@
       positionBounds.extend(markerPosition); // LatLngBounds의 객체 확장
       break;
     }
-
     map.panToBounds(positionBounds); // 확장된 bounds의 중심으로 이동시키기
     map.zoomOut();
+
   }
 </script>

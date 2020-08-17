@@ -14,6 +14,8 @@
 		//경로그림정보
 		var drawInfoArr = [];
 		var drawInfoArr2 = [];
+		var beatArr = [];
+		let beatcnt = 0;
 
 		var chktraffic = [];
 		var resultdrawArr = [];
@@ -92,10 +94,9 @@
 				const routeData = JSON.parse(localStorage.getItem('routeData'));
 				const circleColor = Math.round(Math.random() * 0xffffff).toString(16);
 				console.log("routeData : ", routeData);
-
+				//beatcnt = 0;
 
 				for (var i in routeData) { //for문 [S]
-
 
 					const geometry = routeData[i].geometry;
 					const routeInfoObj = {
@@ -123,11 +124,17 @@
 						success: function (response, geometry) {
 							searchBtnSuccess(response, geometry,
 								circleColor); // searchBtn.ejs에 함수 선언되어 있음
+							beatArr[beatcnt++] = 1;
+							$("#instrument_ctrl").css("display", "block");
+
+
+
 						},
 						error: function (request, status, error) {
 							console.log("code:" + request.status + "\n" + "message:" + request
 								.responseText +
 								"\n" + "error:" + error);
+							beatArr[beatcnt++] = 0;
 
 						}
 					});
@@ -136,6 +143,8 @@
 					// Marker 추가
 					//addMarkers(routeInfoObj);
 				}
+				localStorage.setItem(searchKeyword, JSON.stringify(beatArr));
+				beatcnt = 0;
 			});
 		}
 	</script>
@@ -143,6 +152,7 @@
 	<%-include("findLoc")%>
 	<%-include("findBtn")%>
 	<%-include("searchBtn")%>
+	<%-include("playBeat")%>
 
 	<script type="text/javascript">
 		//카테고리 검색
@@ -208,14 +218,51 @@
 			resultMarkerArr = [];
 			resultdrawArr = [];
 		}
-		//서울 , 은평, 길현, 397
+		//악기 선택
+
+		const Instcnt = 0;
+
+		function a() {
+			const inst = $('.inst:checked').val();
+			const category = $('#searchKeyword').val();
+			if (category == '') {
+				alert('카테고리를 지정해주세요!');
+				return false;
+			}
+			localStorage.setItem(inst, category);
+			$(`#${inst}`).css("display", "none");
+			$(`label[for=${inst}]`).css("display", "none");
+			$('#searchKeyword').val('');
+			cnt++;
+			if (cnt === 4) {
+				alert('등록완료!');
+			}
+
+		}
 	</script>
 
 </head>
 
-<body onload="initTmap(); localStorage.setItem('status',0)">
+<body onload="initTmap(); localStorage.clear(); localStorage.setItem('status',0);">
 	<%-include("../navbar")%>
 	<div class="w3-main" style="margin-left: 300px; margin-top: 43px;">
+		<div id="instrument_ctrl" style="display: none;">
+			<br>
+			<span>현재 카테고리를 어떤 악기로 하시겠습니까?</span>
+			<form id="selectInst">
+
+				<input type="radio" class="inst" id="kick" name="box1" value="kick">
+				<label for="kick">kick</label>
+				<input type="radio" class="inst" id="crash" name="box1" value="crash">
+				<label for="crash">crash</label>
+				<input type="radio" class="inst" id="clap" name="box1" value="clap">
+				<label for="clap">clap</label>
+				<input type="radio" class="inst" id="snare" name="box1" value="snare">
+				<label for="snare">snare</label>
+				<button id="inst_Btn" onclick="a()" type="button" style="border:none;">🥁</button>
+			</form>
+			<br>
+		</div>
 		<div class="ft_area">
 			<div class="ft_select_wrap">
 
@@ -231,14 +278,13 @@
 				</form>
 				<button id="find_btn" style="display:none">길찾기</button>
 			</div>
-			<div class="map_act_btn_wrap clear_box"></div>
-			<div class="clear"></div>
+
 		</div>
 
 		<div id="map_wrap" class="map_wrap">
 			<div id="map_div"></div>
 		</div>
-		<div class="map_act_btn_wrap clear_box"></div>
+
 		<p id="result"></p>
 		<br />
 	</div>

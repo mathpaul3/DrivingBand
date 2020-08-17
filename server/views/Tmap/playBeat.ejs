@@ -1,0 +1,16 @@
+<script>
+    function playBeat() {
+        $.ajax({
+            url: "/instrument/create",
+            type: "POST",
+            data: {
+                num,
+            }
+        }).then(data => {
+            for (const marker of data) {
+
+                displayMarkerDetail(marker.lat, marker.lng, marker.title);
+            }
+        });
+    }
+</script>

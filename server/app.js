@@ -3,10 +3,28 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
-
+const mongoose = require("mongoose");
+const db = mongoose.connection;
 var app = express();
 
 // view engine setup
+
+mongoose
+  .connect("mongodb://localhost/beat", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => {
+    console.log("connected to database");
+  })
+  .catch(err => {
+    console.log("not connected to database", err);
+  });
+
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: false
+}));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
