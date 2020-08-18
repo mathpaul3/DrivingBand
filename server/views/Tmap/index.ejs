@@ -245,7 +245,7 @@
 				const crash = localStorage.getItem('crash');
 				const crashsheet = localStorage.getItem(crash);
 				$.ajax({
-					type: "GET",
+					type: "POST",
 					url: "/sequencer",
 					data: {
 						kick: kicksheet,
@@ -253,7 +253,9 @@
 						snare: snaresheet,
 						crash: crashsheet,
 					}
-				}).done(alert('sdasd'));
+				}).then(data => {
+					console.log(data);
+				});
 			}
 
 		}

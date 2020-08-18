@@ -27,17 +27,19 @@ const showSequencer = (req, res) => {
     clap,
     crash
   } = req.body;
-  console.log(kick);
-  let num = 4;
-  res.redirect("main/sequencer", {
+
+  const musicSheet = {
     kick,
     snare,
     clap,
-    crash,
-    num
-  });
-  console.log('here');
+    crash
+  };
+  console.log(musicSheet);
+
+  res.json(musicSheet);
+
 };
+
 
 
 
