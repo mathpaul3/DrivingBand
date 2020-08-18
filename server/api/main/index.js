@@ -7,6 +7,7 @@ const ctrl = require("./main.ctrl");
 router.get("/", ctrl.showMainPage);
 router.get("/category", ctrl.showCategoryPage);
 router.get("/Tmap", ctrl.showTmapPage);
-router.post("/sequencer", ctrl.showSequencer);
+router.get("/sequencer", ctrl.showSequencer);
+router.post("/sequencer", ctrl.Sequencer);
 
 module.exports = router;

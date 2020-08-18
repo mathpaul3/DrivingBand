@@ -235,27 +235,7 @@
 			$('#searchKeyword').val('');
 			cnt++;
 			if (cnt === 4) {
-				console.log('asda');
-				const kick = localStorage.getItem('kick');
-				const kicksheet = localStorage.getItem(kick);
-				const snare = localStorage.getItem('snare');
-				const snaresheet = localStorage.getItem(snare);
-				const clap = localStorage.getItem('clap');
-				const clapsheet = localStorage.getItem(clap);
-				const crash = localStorage.getItem('crash');
-				const crashsheet = localStorage.getItem(crash);
-				$.ajax({
-					type: "POST",
-					url: "/sequencer",
-					data: {
-						kick: kicksheet,
-						clap: clapsheet,
-						snare: snaresheet,
-						crash: crashsheet,
-					}
-				}).then(data => {
-					console.log(data);
-				});
+				location.href = "/sequencer";
 			}
 
 		}

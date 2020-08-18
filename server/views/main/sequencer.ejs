@@ -5,21 +5,43 @@
 <body>
     <%-include("../navbar"); %>
 
+    <div class="w3-main" style="margin-left: 300px; margin-top: 43px;">
+        <div class="beatBox">
+            <%=musicSheet.a%>
 
-    <div class="beatBox">
-
-        <ul class="kick">
-            <%=%>
-            <li></li>
-        </ul>
-        <ul class="snare"></ul>
-        <ul class="crash"></ul>
-        <ul class="clap"></ul>
+            <ul class="snare"></ul>
+            <ul class="crash">s</ul>
+            <ul class="clap"></ul>
+        </div>
     </div>
 
 
-
     <script>
+        console.log('asda');
+        //
+        //const kick = localStorage.getItem('kick');
+        //const kicksheet = localStorage.getItem(kick);
+        //const snare = localStorage.getItem('snare');
+        //const snaresheet = localStorage.getItem(snare);
+        //const clap = localStorage.getItem('clap');
+        //const clapsheet = localStorage.getItem(clap);
+        //const crash = localStorage.getItem('crash');
+        //const crashsheet = localStorage.getItem(crash);
+        //$.ajax({
+        //    type: "POST",
+        //    url: "/sequencer",
+        //    data: {
+        //        kick: kicksheet,
+        //        clap: clapsheet,
+        //        snare: snaresheet,
+        //        crash: crashsheet,
+        //    }
+        //}).then(data => {
+        //    console.log(data.kick);
+        //
+        //
+        //});
+    </script>
 
     </script>
     <%-include("../footer"); %>
