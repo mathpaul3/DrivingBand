@@ -1,50 +1,161 @@
 <!DOCTYPE html>
 <html>
 <%-include("../header"); %>
+<style>
+    body {
+        background: #34495e;
+        width: 100%;
+        overflow: scroll;
+
+    }
+
+    body::-webkit-scrollbar {
+
+        display: none;
+
+    }
+
+    ul {
+        display: flex;
+        list-style-type: none;
+        width: 250%;
+    }
+
+    .label {
+        color: #ecf0f1;
+        border-radius: 0.3rem;
+        width: 300px;
+        height: 100px;
+        margin-right: 10px;
+
+    }
+
+    .kick>.true {
+        border-radius: 0.3rem;
+        width: 300px;
+        height: 100px;
+        margin-right: 10px;
+        background: #1abc9c;
+    }
+
+    .snare>.true {
+        border-radius: 0.3rem;
+        width: 300px;
+        height: 100px;
+        margin-right: 10px;
+        background: #2ecc71;
+    }
+
+    .clap>.true {
+        border-radius: 0.3rem;
+        width: 300px;
+        height: 100px;
+        margin-right: 10px;
+        background: #3498db;
+    }
+
+    .crash>.true {
+        border-radius: 0.3rem;
+        width: 300px;
+        height: 100px;
+        margin-right: 10px;
+        background: #9b59b6;
+    }
+
+
+    .false {
+        border-radius: 0.3rem;
+        width: 300px;
+        height: 100px;
+        margin-right: 10px;
+        background: #2c3e50;
+    }
+
+    .beatBox {
+        margin-top: 100px;
+    }
+</style>
 
 <body>
     <%-include("../navbar"); %>
 
     <div class="w3-main" style="margin-left: 300px; margin-top: 43px;">
         <div class="beatBox">
-            <%=musicSheet.a%>
-
-            <ul class="snare"></ul>
-            <ul class="crash">s</ul>
-            <ul class="clap"></ul>
+            <button onclick="playBeat()">start</button>
+            <ul class="kick">
+                <li class="label">kick</li>
+            </ul>
+            <ul class="snare">
+                <li class="label">snare</li>
+            </ul>
+            <ul class="crash">
+                <li class="label">crash</li>
+            </ul>
+            <ul class="clap">
+                <li class="label">clap</li>
+            </ul>
         </div>
     </div>
 
 
     <script>
-        console.log('asda');
-        //
-        //const kick = localStorage.getItem('kick');
-        //const kicksheet = localStorage.getItem(kick);
-        //const snare = localStorage.getItem('snare');
-        //const snaresheet = localStorage.getItem(snare);
-        //const clap = localStorage.getItem('clap');
-        //const clapsheet = localStorage.getItem(clap);
-        //const crash = localStorage.getItem('crash');
-        //const crashsheet = localStorage.getItem(crash);
-        //$.ajax({
-        //    type: "POST",
-        //    url: "/sequencer",
-        //    data: {
-        //        kick: kicksheet,
-        //        clap: clapsheet,
-        //        snare: snaresheet,
-        //        crash: crashsheet,
-        //    }
-        //}).then(data => {
-        //    console.log(data.kick);
-        //
-        //
-        //});
+        const kick = localStorage.getItem('kick');
+        const kicksheet = localStorage.getItem(kick);
+        const snare = localStorage.getItem('snare');
+        const snaresheet = localStorage.getItem(snare);
+        const clap = localStorage.getItem('clap');
+        const clapsheet = localStorage.getItem(clap);
+        const crash = localStorage.getItem('crash');
+        const crashsheet = localStorage.getItem(crash);
+        $(() => {
+            //const kick = localStorage.getItem('kick');
+            //const kicksheet = localStorage.getItem(kick);
+            //const snare = localStorage.getItem('snare');
+            //const snaresheet = localStorage.getItem(snare);
+            //const clap = localStorage.getItem('clap');
+            //const clapsheet = localStorage.getItem(clap);
+            //const crash = localStorage.getItem('crash');
+            //const crashsheet = localStorage.getItem(crash);
+            //let cnt = 0;
+
+
+            for (i = 0; i < kicksheet.length; i++) {
+                if (kicksheet[i] == 1) $('.kick').append(`<li class="true ${i}" ></li>`);
+                else $('.kick').append(`<li class="false" ></li>`);
+            }
+            for (i = 0; i < snaresheet.length; i++) {
+                if (snaresheet[i] == 1) $('.snare').append(`<li class="true" ></li>`);
+                else $('.snare').append(`<li class="false" ></li>`);
+            }
+            for (i = 0; i < clapsheet.length; i++) {
+                if (clapsheet[i] == 1) $('.clap').append(`<li class="true" ></li>`);
+                else $('.clap').append(`<li class="false" ></li>`);
+            }
+            for (i = 0; i < crashsheet.length; i++) {
+                if (crashsheet[i] == 1) $('.crash').append(`<li class="true" ></li>`);
+                else $('.crash').append(`<li class="false" ></li>`);
+            }
+        })
+
+
+        function playBeat() {
+            console.log(kicksheet.length);
+            for (i = 0; i < kicksheet.length; i++) {
+
+                setTimeout(() => {
+                    if (kicksheet[i] === 1) {
+                        //kickDrum.play();
+                        console.log(kicksheet[i]);
+                        $(`.kick`).css('display', 'none');
+                    }
+                    if (crashsheet[i] === 1) crashDrum.play();
+                    if (snaresheet[i] === 1) snareDrum.play();
+                    if (clapsheet[i] === 1) clapDrum.play();
+                }, i * 500);
+            }
+        }
     </script>
 
-    </script>
-    <%-include("../footer"); %>
 </body>
 
 </html>

@@ -5,7 +5,10 @@ const showMainPage = (req, res) => {
   });
 };
 const musicSheet = {
-  'a': 'asds',
+  kick: "",
+  snare: "",
+  clap: "",
+  crash: ""
 };
 const showCategoryPage = (req, res) => {
   let num = 2;
@@ -23,42 +26,29 @@ const showTmapPage = (req, res) => {
 
 const showSequencer = (req, res) => {
   let num = 4;
+  console.log(musicSheet);
   res.render("main/sequencer", {
     num,
     musicSheet
   });
 };
 
-
 const Sequencer = (req, res) => {
-
-  const {
-    kick,
-    snare,
-    clap,
-    crash
-  } = req.body;
-
+  const { kick, snare, clap, crash } = req.body;
   musicSheet = {
-    kick,
-    snare,
-    clap,
-    crash
+    kick: kick,
+    snare: snare,
+    clap: clap,
+    crash: crash
   };
 
-
-  res.json(musicSheet);
-
+  res.json(kick, snare, clap, crash);
 };
-
-
-
-
 
 module.exports = {
   showMainPage,
   showCategoryPage,
   showTmapPage,
   showSequencer,
-  Sequencer,
+  Sequencer
 };
