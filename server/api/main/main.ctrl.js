@@ -20,12 +20,26 @@ const showTmapPage = (req, res) => {
 };
 
 const showSequencer = (req, res) => {
+
+  const {
+    kick,
+    snare,
+    clap,
+    crash
+  } = req.body;
+  console.log(kick);
   let num = 4;
-  res.render("main/sequencer", {
+  res.redirect("main/sequencer", {
+    kick,
+    snare,
+    clap,
+    crash,
     num
   });
   console.log('here');
 };
+
+
 
 
 module.exports = {

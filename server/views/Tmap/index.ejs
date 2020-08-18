@@ -235,7 +235,25 @@
 			$('#searchKeyword').val('');
 			cnt++;
 			if (cnt === 4) {
-				location.href = "/category";
+				console.log('asda');
+				const kick = localStorage.getItem('kick');
+				const kicksheet = localStorage.getItem(kick);
+				const snare = localStorage.getItem('snare');
+				const snaresheet = localStorage.getItem(snare);
+				const clap = localStorage.getItem('clap');
+				const clapsheet = localStorage.getItem(clap);
+				const crash = localStorage.getItem('crash');
+				const crashsheet = localStorage.getItem(crash);
+				$.ajax({
+					type: "GET",
+					url: "/sequencer",
+					data: {
+						kick: kicksheet,
+						clap: clapsheet,
+						snare: snaresheet,
+						crash: crashsheet,
+					}
+				}).done(alert('sdasd'));
 			}
 
 		}
@@ -243,7 +261,7 @@
 
 </head>
 
-<body onload="initTmap(); localStorage.clear(); localStorage.setItem('status',0);">
+<body onload="initTmap();  localStorage.setItem('status',0);">
 	<%-include("../navbar")%>
 	<div class="w3-main" style="margin-left: 300px; margin-top: 43px;">
 		<div id="instrument_ctrl" style="display: none;">
