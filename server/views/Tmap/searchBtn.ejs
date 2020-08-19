@@ -3,12 +3,11 @@
     //console.log(response);
 
     var resultpoisData = response.searchPoiInfo.pois.poi;
-    console.log(resultpoisData.length, 'length');
+    console.log(resultpoisData.length, "length");
 
     var positionBounds = new Tmapv2.LatLngBounds(); //맵에 결과물 확인 하기 위한 LatLngBounds객체 생성
     // 3. POI 마커 표시
     for (var k in resultpoisData) {
-
       // POI 마커 정보 저장
       var noorLat = Number(resultpoisData[k].noorLat);
       var noorLon = Number(resultpoisData[k].noorLon);
@@ -32,9 +31,8 @@
         radius: 100, // 원의 반지름. 크기설정
         strokeColor: `#${circleColor}`, // 테두리 색상
         fillColor: `#${circleColor}`, // 원 내부 색상
-        map: map // 지도 객체
+        map: map, // 지도 객체
       });
-
 
       //marker = new Tmapv2.Marker({
       //    position: markerPosition,
@@ -57,12 +55,10 @@
 
       //markerArr.push(marker);
 
-
       positionBounds.extend(markerPosition); // LatLngBounds의 객체 확장
       break;
     }
     map.panToBounds(positionBounds); // 확장된 bounds의 중심으로 이동시키기
     map.zoomOut();
-
   }
 </script>

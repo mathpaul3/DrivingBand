@@ -99,45 +99,127 @@
 				for (var i in routeData) { //for문 [S]
 
 					const geometry = routeData[i].geometry;
-					const routeInfoObj = {
-						//markerImage: "http://topopen.tmap.co.kr/imgs/point.png",
-						lng: geometry.coordinates[0],
-						lat: geometry.coordinates[1],
-						//pointType: null,
-					};
+					if (typeof(geometry.coordinates[0]) == "object") {
+						lng = geometry.coordinates[1][0];
+						lat = geometry.coordinates[1][1];
+					} else {
+						lng = geometry.coordinates[0];
+						lat = geometry.coordinates[1];
+					}
 
-
-					$.ajax({
-
-						method: "GET", // 요청 방식
-						url: "https://apis.openapi.sk.com/tmap/pois/search/around?version=1&format=json&callback=result", // url 주소
-						data: {
-							"categories": searchKeyword,
-							"searchType": "name",
-							"searchtypCd": "A",
-							"radius": 1,
-							"centerLon": routeInfoObj.lng,
-							"centerLat": routeInfoObj.lat,
-							"appKey": "l7xxabd2c64eec2549daabdf41bb048a9c14",
-							"count": 200,
-						},
-						success: function (response, geometry) {
-							searchBtnSuccess(response, geometry,
-								circleColor); // searchBtn.ejs에 함수 선언되어 있음
-							beatArr[beatcnt++] = 1;
-							$("#instrument_ctrl").css("display", "block");
-
-
-
-						},
-						error: function (request, status, error) {
-							console.log("code:" + request.status + "\n" + "message:" + request
-								.responseText +
-								"\n" + "error:" + error);
-							beatArr[beatcnt++] = 0;
-
+					if (i>0) {
+						if (typeof(routeData[i-1].geometry.coordinates[0]) == "object") {
+							lastlng = routeData[i-1].geometry.coordinates[1][0];
+							lastlat = routeData[i-1].geometry.coordinates[1][1];
+						} else {
+							lastlng = routeData[i-1].geometry.coordinates[0];
+							lastlat = routeData[i-1].geometry.coordinates[1];
 						}
-					});
+					} else {
+						lastlng = lng;
+						lastlat = lat;
+					}
+					console.log("이전좌표: ", lastlng, ", ", lastlat, "\n현재좌표: ", lng, ", ", lat);
+					
+					if (lastlng < lng) smallLng = lastlng, bigLng = lng;
+					else smallLng = lng, bigLng = lastlng;
+					if (lastlat < lat) smallLat = lastlat, bigLat = lat;
+					else smallLat = lat, bigLat = lastlat;
+					
+					if (bigLng-smallLng < bigLat-smallLat) {
+						dLng = (bigLng - smallLng) / ((bigLat - smallLat) / 0.008);
+						console.log("dLng: ", dLng);
+						for (;smallLat+0.008 < bigLat; smallLng+=dLng, smallLat+=0.008) {
+							console.log("중간좌표: ", smallLng, ", ", smallLat);
+
+							const routeInfoObj = {
+								//markerImage: "http://topopen.tmap.co.kr/imgs/point.png",
+								lng: smallLng,
+								lat: smallLat,
+								//pointType: null,
+							};
+
+							
+							$.ajax({
+
+							method: "GET", // 요청 방식
+							url: "https://apis.openapi.sk.com/tmap/pois/search/around?version=1&format=json&callback=result", // url 주소
+							data: {
+								"categories": searchKeyword,
+								"searchType": "name",
+								"searchtypCd": "A",
+								"radius": 1,
+								"centerLon": routeInfoObj.lng,
+								"centerLat": routeInfoObj.lat,
+								"appKey": "l7xxabd2c64eec2549daabdf41bb048a9c14",
+								"count": 200,
+							},
+							success: function (response, geometry) {
+								searchBtnSuccess(response, geometry,
+									circleColor); // searchBtn.ejs에 함수 선언되어 있음
+								beatArr[beatcnt++] = 1;
+								$("#instrument_ctrl").css("display", "block");
+							
+							
+							
+							},
+							error: function (request, status, error) {
+								console.log("code:" + request.status + "\n" + "message:" + request
+									.responseText +
+									"\n" + "error:" + error);
+								beatArr[beatcnt++] = 0;
+							
+							}
+							});
+						}
+					} else {
+						dLat = (bigLat - smallLat) / ((bigLng - smallLng) / 0.008);
+						console.log("dLat: ", dLat);
+						for (;smallLng+0.008 < bigLng; smallLng+=0.008, smallLat+=dLat) {
+							console.log("중간좌표: ", smallLng, ", ", smallLat);
+							
+							const routeInfoObj = {
+								//markerImage: "http://topopen.tmap.co.kr/imgs/point.png",
+								lng: smallLng,
+								lat: smallLat,
+								//pointType: null,
+							};
+
+							
+							$.ajax({
+
+							method: "GET", // 요청 방식
+							url: "https://apis.openapi.sk.com/tmap/pois/search/around?version=1&format=json&callback=result", // url 주소
+							data: {
+								"categories": searchKeyword,
+								"searchType": "name",
+								"searchtypCd": "A",
+								"radius": 1,
+								"centerLon": routeInfoObj.lng,
+								"centerLat": routeInfoObj.lat,
+								"appKey": "l7xxabd2c64eec2549daabdf41bb048a9c14",
+								"count": 200,
+							},
+							success: function (response, geometry) {
+								searchBtnSuccess(response, geometry,
+									circleColor); // searchBtn.ejs에 함수 선언되어 있음
+								beatArr[beatcnt++] = 1;
+								$("#instrument_ctrl").css("display", "block");
+							
+							
+							
+							},
+							error: function (request, status, error) {
+								console.log("code:" + request.status + "\n" + "message:" + request
+									.responseText +
+									"\n" + "error:" + error);
+								beatArr[beatcnt++] = 0;
+							
+							}
+							});
+						}
+					}
+
 					//return false;
 
 					// Marker 추가
