@@ -1,189 +1,195 @@
 <!DOCTYPE html>
 <html>
-  <%-include("../header"); %>
-  <style>
+<%-include("../header"); %>
+<style>
     body {
-      background: #34495e;
-      width: 100%;
-      overflow: scroll;
+        background: #34495e;
+        width: 100%;
+        overflow: scroll;
     }
 
     body::-webkit-scrollbar {
-      display: none;
+        display: none;
     }
 
     ul {
-      display: flex;
-      list-style-type: none;
-      width: 250%;
+        display: flex;
+        list-style-type: none;
+        width: 250%;
     }
 
     .label {
-      color: #ecf0f1;
-      border-radius: 0.3rem;
-      width: 300px;
-      height: 100px;
-      margin-right: 10px;
+        color: #ecf0f1;
+        border-radius: 0.3rem;
+        width: 300px;
+        height: 100px;
+        margin-right: 10px;
     }
 
     .ktrue {
-      border-radius: 0.3rem;
-      width: 300px;
-      height: 100px;
-      margin-right: 10px;
-      background: #16a085;
+        border-radius: 0.3rem;
+        width: 300px;
+        height: 100px;
+        margin-right: 10px;
+        background: #16a085;
     }
 
     .strue {
-      border-radius: 0.3rem;
-      width: 300px;
-      height: 100px;
-      margin-right: 10px;
-      background: #e67e22;
+        border-radius: 0.3rem;
+        width: 300px;
+        height: 100px;
+        margin-right: 10px;
+        background: #e67e22;
     }
 
-    .cltrue {
-      border-radius: 0.3rem;
-      width: 300px;
-      height: 100px;
-      margin-right: 10px;
-      background: #2980b9;
+    .ttrue {
+        border-radius: 0.3rem;
+        width: 300px;
+        height: 100px;
+        margin-right: 10px;
+        background: #2980b9;
     }
 
-    .crtrue {
-      border-radius: 0.3rem;
-      width: 300px;
-      height: 100px;
-      margin-right: 10px;
-      background: #8e44ad;
+    .shtrue {
+        border-radius: 0.3rem;
+        width: 300px;
+        height: 100px;
+        margin-right: 10px;
+        background: #8e44ad;
     }
 
     .false {
-      border-radius: 0.3rem;
-      width: 300px;
-      height: 100px;
-      margin-right: 10px;
-      background: #2c3e50;
+        border-radius: 0.3rem;
+        width: 300px;
+        height: 100px;
+        margin-right: 10px;
+        background: #2c3e50;
     }
 
     .beatBox {
-      margin-top: 70px;
+        margin-top: 70px;
     }
 
     #startBtn {
-      border-radius: 0.3rem;
-      border: none;
-      padding: 7px;
-      width: 100px;
-      background: #778ca3;
-      outline: none;
-      color: #ffffff;
-      margin-left: 40px;
-      margin-top: 40px;
-      font-size: 20px;
-      font-weight: 700;
+        border-radius: 0.3rem;
+        border: none;
+        padding: 7px;
+        width: 100px;
+        background: #778ca3;
+        outline: none;
+        color: #ffffff;
+        margin-left: 40px;
+        margin-top: 40px;
+        font-size: 20px;
+        font-weight: 700;
     }
-  </style>
+</style>
 
-  <body>
+<body>
     <%-include("../navbar"); %>
 
     <div class="w3-main" style="margin-left: 300px; margin-top: 43px;">
-      <div class="soudBox">
-        <audio id="kickDrum">
-          <source src="/mp3/kick.mp3" type="audio/mpeg" />
-        </audio>
-        <audio id="crashDrum">
-          <source src="/mp3/crash.mp3" type="audio/mpeg" />
-        </audio>
-        <audio id="clapDrum">
-          <source src="/mp3/clap.mp3" type="audio/mpeg" />
-        </audio>
-        <audio id="snareDrum">
-          <source src="/mp3/snare.mp3" type="audio/mpeg" />
-        </audio>
-      </div>
-      <button id="startBtn" onclick="playBeat()">Play</button>
-      <div class="beatBox">
-        <ul class="kick">
-          <li class="label">kick</li>
-        </ul>
-        <ul class="snare">
-          <li class="label">snare</li>
-        </ul>
-        <ul class="crash">
-          <li class="label">crash</li>
-        </ul>
-        <ul class="clap">
-          <li class="label">clap</li>
-        </ul>
-      </div>
+        <div class="soudBox">
+            <audio id="kickDrum">
+                <source src="/mp3/9th Wonder Kit/Kicks/Ban_k.wav" type="audio/wav" />
+            </audio>
+            <audio id="shakeDrum">
+                <source src="/mp3/9th Wonder Kit/Shakers/Hi_Shk1.wav" type="audio/wav" />
+            </audio>
+            <audio id="tomDrum">
+                <source src="/mp3/9th Wonder Kit/Percussions/Mid_Tom1.wav" type="audio/wav" />
+            </audio>
+            <audio id="snareDrum">
+                <source src="/mp3/9th Wonder Kit/Snares/Cel_Snr.wav" type="audio/wav" />
+            </audio>
+            <audio id="melody">
+                <source src="/mp3/Night_Driver.mp3" type="audio/mpeg" />
+            </audio>
+        </div>
+        <button id="startBtn" onclick="playBeat()">Play</button>
+        <div class="beatBox">
+            <ul class="kick">
+                <li class="label">kick</li>
+            </ul>
+            <ul class="snare">
+                <li class="label">snare</li>
+            </ul>
+            <ul class="shake">
+                <li class="label">shake</li>
+            </ul>
+            <ul class="tom">
+                <li class="label">tom</li>
+            </ul>
+        </div>
     </div>
 
     <script>
-      //악보 받아오기
-      const kick = localStorage.getItem("kick");
-      const kicksheet = localStorage.getItem(kick);
-      const snare = localStorage.getItem("snare");
-      const snaresheet = localStorage.getItem(snare);
-      const clap = localStorage.getItem("clap");
-      const clapsheet = localStorage.getItem(clap);
-      const crash = localStorage.getItem("crash");
-      const crashsheet = localStorage.getItem(crash);
+        //악보 받아오기
+        const kick = localStorage.getItem("kick");
+        const kicksheet = localStorage.getItem(kick);
+        const snare = localStorage.getItem("snare");
+        const snaresheet = localStorage.getItem(snare);
+        const tom = localStorage.getItem("tom");
+        const tomsheet = localStorage.getItem(tom);
+        const shake = localStorage.getItem("shake");
+        const shakesheet = localStorage.getItem(shake);
 
-      //악기  받아오기
-      const kickDrum = document.getElementById("kickDrum");
-      const crashDrum = document.getElementById("crashDrum");
-      const snareDrum = document.getElementById("snareDrum");
-      const clapDrum = document.getElementById("clapDrum");
-      $(() => {
-        //$('.kicklabel').text(kick);
+        //악기  받아오기
+        const kickDrum = document.getElementById("kickDrum");
+        const shakeDrum = document.getElementById("shakeDrum");
+        const snareDrum = document.getElementById("snareDrum");
+        const tomDrum = document.getElementById("tomDrum");
+        const melody = document.getElementById("melody");
+        $(() => {
+            //$('.kicklabel').text(kick);
 
-        for (i = 0; i < kicksheet.length; i++) {
-          if (kicksheet[i] == 1)
-            $(".kick").append(`<li class="ktrue ${i}" ></li>`);
-          else $(".kick").append(`<li class="false" ></li>`);
-        }
-        for (i = 0; i < snaresheet.length; i++) {
-          if (snaresheet[i] == 1)
-            $(".snare").append(`<li class="strue ${i}" ></li>`);
-          else $(".snare").append(`<li class="false" ></li>`);
-        }
-        for (i = 0; i < clapsheet.length; i++) {
-          if (clapsheet[i] == 1)
-            $(".clap").append(`<li class="cltrue ${i}" ></li>`);
-          else $(".clap").append(`<li class="false" ></li>`);
-        }
-        for (i = 0; i < crashsheet.length; i++) {
-          if (crashsheet[i] == 1)
-            $(".crash").append(`<li class="crtrue ${i}" ></li>`);
-          else $(".crash").append(`<li class="false" ></li>`);
-        }
-      });
+            for (i = 0; i < kicksheet.length; i++) {
+                if (kicksheet[i] == 1)
+                    $(".kick").append(`<li class="ktrue ${i}" ></li>`);
+                else $(".kick").append(`<li class="false" ></li>`);
+            }
+            for (i = 0; i < snaresheet.length; i++) {
+                if (snaresheet[i] == 1)
+                    $(".snare").append(`<li class="strue ${i}" ></li>`);
+                else $(".snare").append(`<li class="false" ></li>`);
+            }
+            for (i = 0; i < tomsheet.length; i++) {
+                if (tomsheet[i] == 1)
+                    $(".tom").append(`<li class="ttrue ${i}" ></li>`);
+                else $(".tom").append(`<li class="false" ></li>`);
+            }
+            for (i = 0; i < shakesheet.length; i++) {
+                if (shakesheet[i] == 1)
+                    $(".shake").append(`<li class="shtrue ${i}" ></li>`);
+                else $(".shake").append(`<li class="false" ></li>`);
+            }
+        });
 
-      function playBeat() {
-        //console.log(kicksheet.length);
-        for (let i = 0; i < kicksheet.length; i++) {
-          setTimeout(() => {
-            if (kicksheet[i] == 1) {
-              kickDrum.play();
-              $(`.ktrue.${i}`).css("background", "#32ff7e");
+        function playBeat() {
+            //console.log(kicksheet.length);
+            //melody.play();
+            for (let i = 0; i < kicksheet.length; i++) {
+                setTimeout(() => {
+                    if (kicksheet[i] == 1) {
+                        kickDrum.play();
+                        $(`.ktrue.${i}`).css("background", "#32ff7e");
+                    }
+                    if (shakesheet[i] == 1) {
+                        shakeDrum.play();
+                        $(`.shtrue.${i}`).css("background", "#7d5fff");
+                    }
+                    if (snaresheet[i] == 1) {
+                        snareDrum.play();
+                        $(`.strue.${i}`).css("background", "#ff9f43");
+                    }
+                    if (tomsheet[i] == 1) {
+                        tomDrum.play();
+                        $(`.ttrue.${i}`).css("background", "#18dcff");
+                    }
+                }, i * 120 + 30);
             }
-            if (crashsheet[i] == 1) {
-              crashDrum.play();
-              $(`.crtrue.${i}`).css("background", "#7d5fff");
-            }
-            if (snaresheet[i] == 1) {
-              snareDrum.play();
-              $(`.strue.${i}`).css("background", "#ff9f43");
-            }
-            if (clapsheet[i] == 1) {
-              clapDrum.play();
-              $(`.cltrue.${i}`).css("background", "#18dcff");
-            }
-          }, i * 120);
         }
-      }
     </script>
-  </body>
+</body>
+
 </html>
