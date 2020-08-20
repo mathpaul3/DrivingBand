@@ -54,7 +54,7 @@
       localStorage.setItem("status", 1);
       localStorage.setItem("departure", JSON.stringify(placeInfo));
       $(".ft_select_wrap").append(
-        `<div class="checkDP"><span>출발지: ${placeInfo.builName}</span></div>`
+        `<div class="checkDP">departure:${placeInfo.builName}</div>`
       );
       $("#city").val("");
       $("#gun_gu").val("");
@@ -64,7 +64,7 @@
       //status == 1 인 경우는 destination
       localStorage.setItem("destination", JSON.stringify(placeInfo));
       $(".ft_select_wrap").append(
-        `<div class="checkDP"><span>목적지: ${placeInfo.builName}</span></div>`
+        `<div class="checkDN">destination:${placeInfo.builName}</div>`
       );
       $("#findLoc").remove();
       $("#find_btn").css("display", "block");

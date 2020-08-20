@@ -1,5 +1,6 @@
 body {
     background: #34495e;
+    color: white;
 }
 
 #map_div {
@@ -9,15 +10,60 @@ body {
 .ft_area {
     margin-left: 10%;
     margin-top: 60px;
+    margin-bottom: 20px;
 }
 
 input {
     border-radius: 0.3rem;
     border: none;
+    outline: none;
     padding: 10px;
     font-size: 15px;
     background: #2c3e50;
+    color: #ffffff;
 }
-button{
-    
+
+button {
+    border-radius: 0.3rem;
+    border: none;
+    outline: none;
+    padding: 10px;
+    font-size: 15px;
+    background: #1abc9c;
+    color: #ffffff;
+    margin-left: 5px;
+    margin-bottom: 10px;
+}
+
+.checkDP span {
+    border-radius: 0.3rem;
+    border: none;
+    outline: none;
+    padding: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    background: #ecf0f1;
+    color: #000000;
+}
+
+.checkDN span {
+    border-radius: 0.3rem;
+    border: none;
+    outline: none;
+    padding: 10px;
+    font-size: 12px;
+    background: #ecf0f1;
+    color: #000000;
+}
+
+#find_btn {
+    border-radius: 0.3rem;
+    border: none;
+    outline: none;
+    padding: 10px;
+    font-size: 15px;
+    background: #e74c3c;
+    color: #ffffff;
+    margin-left: 5px;
+    margin-bottom: 10px;
 }

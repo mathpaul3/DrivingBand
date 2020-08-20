@@ -349,17 +349,17 @@
 	<div class="ft_area">
 		<div class="ft_select_wrap">
 
-			<input id="searchKeyword"></input>
+			<input id="searchKeyword" autocomplete="off"></input>
 			<button id="searchBtn">카테고리</button>
 
 			<form id="findLoc">
 				<span id="locLabel">departure</span>
-				<input id="city" placeholder="시/도" required></input>
-				<input id="gun_gu" placeholder="시/군/구" required></input>
-				<input id="roadNum" placeholder="도로명 + 번지" required></input>
+				<input id="city" placeholder="시/도" required autocomplete="off"></input>
+				<input id="gun_gu" placeholder="시/군/구" required autocomplete="off"></input>
+				<input id="roadNum" placeholder="도로명 + 번지" required autocomplete="off"></input>
 				<button id="submitBtn">get LatLng</button>
 			</form>
-			<button id="find_btn" style="display:none">길찾기</button>
+			<button id="find_btn" style="display:none;">findRoad</button>
 		</div>
 
 	</div>
