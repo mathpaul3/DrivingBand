@@ -1,0 +1,23 @@
+body {
+    background: #34495e;
+}
+
+#map_div {
+    margin: auto;
+}
+
+.ft_area {
+    margin-left: 10%;
+    margin-top: 60px;
+}
+
+input {
+    border-radius: 0.3rem;
+    border: none;
+    padding: 10px;
+    font-size: 15px;
+    background: #2c3e50;
+}
+button{
+    
+}

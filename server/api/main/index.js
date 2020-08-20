@@ -4,8 +4,7 @@ const {
 const router = Router();
 const ctrl = require("./main.ctrl");
 
-router.get("/", ctrl.showMainPage);
-router.get("/category", ctrl.showCategoryPage);
+router.get("/", ctrl.showPage);
 router.get("/Tmap", ctrl.showTmapPage);
 router.get("/sequencer", ctrl.showSequencer);
 router.post("/sequencer", ctrl.Sequencer);

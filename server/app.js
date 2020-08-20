@@ -25,17 +25,19 @@ app.set("view engine", "ejs");
 
 app.use(logger("dev"));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({
+  extended: false
+}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 // app.use(userCtrl.checkAuth);
 
-app.get("/", (req, res) => {
-  res.render("index", {
-    num: 1,
-  });
-});
+// app.get("/", (req, res) => {
+//   res.render("index", {
+//     num: 1,
+//   });
+// });
 
 // 라우팅 모듈 설정
 app.use("/", require("./index"));
