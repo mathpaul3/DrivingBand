@@ -4,47 +4,41 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const mongoose = require("mongoose");
-const db = mongoose.connection;
+// var userCtrl = require("./api/user/user.ctrl");
+// require("dotenv").config(); // load .env file
+
 var app = express();
+mongoose.connect("mongodb://localhost/beat", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+var db = mongoose.connection;
+db.on("error", console.error.bind(console, "connection error: "));
+db.once("open", function () {
+  console.log("Database Connected!");
+});
 
 // view engine setup
-
-mongoose
-  .connect("mongodb://localhost/beat", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
-  .then(() => {
-    console.log("connected to database");
-  })
-  .catch(err => {
-    console.log("not connected to database", err);
-  });
-
-app.use(express.json());
-app.use(express.urlencoded({
-  extended: false
-}));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 app.use(logger("dev"));
 app.use(express.json());
-app.use(express.urlencoded({
-  extended: false
-}));
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+// app.use(userCtrl.checkAuth);
+
 app.get("/", (req, res) => {
   res.render("index", {
-    num: 1
+    num: 1,
   });
 });
 
 // 라우팅 모듈 설정
-app.use("/", require("./api/main"));
-//app.use("/api/main", require(".api/find"));
+app.use("/", require("./index"));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
